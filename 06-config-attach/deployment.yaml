@@ -18,9 +18,9 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: nginx-secret
-          mountPath: /etc/nginx/secret
+        - name: nginx-config
+          mountPath: /etc/nginx/config
       volumes:
-      - name: nginx-deployment
-        secret:
-          secretName: nginx-config
+      - name: nginx-config
+        configMap:
+          name: nginx-config
