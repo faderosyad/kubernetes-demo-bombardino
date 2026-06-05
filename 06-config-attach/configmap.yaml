@@ -13,3 +13,9 @@ data:
         }
       }
     }
+  APP_PORT: "80"
+  APP_ENDPOINT: "/api"
+  .env: |
+    COlOR=BLUE
+    ENV=DEVELOPMENT
+    LOG_LEVEL=INFO
