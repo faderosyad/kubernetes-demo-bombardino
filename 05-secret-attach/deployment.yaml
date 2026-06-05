@@ -17,10 +17,22 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+        env: # Using Environment Variables to inject secret values
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: nginx-secret-stringdata
+                key: DB_HOST
+          - name: DB_HOST_READONLY
+            valueFrom:
+              secretKeyRef:
+                name: nginx-secret-stringdata
+                key: DB_HOST_READONLY
         volumeMounts:
         - name: nginx-secret
           mountPath: /etc/nginx/secret
-      volumes:
+      volumes: # Using Volume Mount to inject secret values
       - name: nginx-secret
         secret:
           secretName: nginx-secret
+          
