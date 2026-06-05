@@ -1,4 +1,4 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
@@ -17,10 +17,34 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+        env: # Using Environment Variables to inject config values
+          - name: APP_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: nginx-config
+                key: APP_PORT
+          - name: APP_ENDPOINT
+            valueFrom:
+              configMapKeyRef:
+                name: nginx-config
+                key: APP_ENDPOINT
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/config
-      volumes:
+        - name: nginx-env
+          mountPath: /app
+      volumes: # Using Volume Mount to inject config as a file
       - name: nginx-config
         configMap:
           name: nginx-config
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+          - key: .env
+            path: .env
+      - name: nginx-env
+        configMap:
+          name: nginx-config
+          items:
+          - key: .env
+            path: .env
